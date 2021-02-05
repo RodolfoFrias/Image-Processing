@@ -10,11 +10,13 @@ class Histogram:
     RESTA = 2
     MULTIPLICACION = 3
     DIVISION = 4
-    EXIT = 5
+    NORMAL = 5
+    EXIT = 6
     VALUE = 10
 
     def __init__(self):
-        self.image = cv2.imread('./images/foto.png', 0)
+        self.image_ = cv2.imread('./images/foto.png', 0)
+        self.image = cv2.cvtColor(self.image_, cv2.COLOR_BGR2RGB)
 
     def options(self):
         while(self.OPTION != self.EXIT):
@@ -23,16 +25,19 @@ class Histogram:
             print("Resta: 2")
             print("Multiplicacón: 3")
             print("División: 4")
-            print("Exit: 5")
+            print("Normal: 5")
+            print("Exit: 6")
             self.OPTION = int(input("Elige un opción: "))
 
             if self.OPTION == self.EXIT:
                 exit()
+            elif self.OPTION == self.NORMAL:
+                self.show()
+            else:
+                self.VALUE = int(input("Valor: "))
 
-            self.VALUE = int(input("Valor: "))
-
-            print("Opción elegida:", self.OPTION)
-            self.process_option()
+                print("Opción elegida:", self.OPTION)
+                self.process_option()
 
     def process_option(self):
         for i in range(len(self.image)):
@@ -45,6 +50,11 @@ class Histogram:
     def show(self):
         hist, bins = np.histogram(self.image.flatten(), 256, [0, 256])
         plt.plot(hist)
+        plt.show()
+        self.show_image()
+    
+    def show_image(self):
+        plt.imshow(self.image)
         plt.show()
 
     def operation(self, image):
